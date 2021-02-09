@@ -1,0 +1,92 @@
+{% extends 'layout.twig' %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/section-7.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <h1 class="module-title font-alt align-center">{{ post.title }}</h1>
+                        <div class="module-subtitle font-inc align-center">
+                            Écris par {{ post.username }} | Publié le {{ post.date|date("d/m/Y") }}
+                        </div>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- BLOG POST -->
+    <section class="module">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+
+                    <!-- POST -->
+                    <div class="post">
+
+                        <div class="post-entry">
+
+                            <p class="text-justify">{{ post.content }}</p>
+                        </div>
+
+                    </div>
+                    <!-- /POST -->
+
+                    <!-- COMMENTS-->
+                    <div class="comments">
+                        <h4 class="comment-title font-alt">Commentaires</h4>
+
+                        <!-- COMMENT 1 -->
+                        <div class="comment clearfix">
+
+                            <div class="comment-author font-inc">
+                                <i class="fa fa-fw"></i><span> John Doe</span>
+                            </div>
+
+                            <div class="comment-body">
+                                <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The European languages are members of the same family. Their separate existence is a myth.</p>
+                            </div>
+
+                            <div class="comment-meta font-inc">
+                                <i class="fa fa-clock-o"></i><span> Today, 5 hours ago</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /COMMENTS -->
+
+                    <!-- COMMENT FORM -->
+                    <div class="comment-form">
+                        <h4 class="comment-form-title font-alt">Ajouter un commentaire</h4>
+                        {% if not session.user %}
+                            <div class="form-group">
+                                <textarea class="form-control"  disabled="disabled" id="comment" name="comment" rows="6" placeholder="Votre message..."></textarea>
+                            </div>
+
+                            <p class="text-center"><a href="login">Connectez-vous</a> pour pouvoir commenter.</p>
+                        {% else %}
+                        <form method="post" action="">
+
+                            <div class="form-group">
+                                <textarea class="form-control" id="comment" name="comment" rows="6" placeholder="Votre message..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-round btn-g">Publier</button>
+
+                        </form>
+                        {% endif %}
+                    </div>
+                    <!-- COMMENT FORM -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /BLOG POST -->
+
+{% endblock %}

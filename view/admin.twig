@@ -1,0 +1,83 @@
+{% extends 'layout.twig' %}
+{% block title %}Panel Admin{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/section-7.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">Panel Admin</h1>
+                        <div class="module-subtitle font-inc align-center">
+                            <p>Bienvenue <strong class="text-uppercase">{{ session.user.username }}</strong> sur l'espace d'administration.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- ADMIN MODULE -->
+    <section class="module">
+            <div class="container">
+
+                    <!-- COMMENTS VALIDATION -->
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-comment-o"></i> Commentaires à valider :</h4>
+                            <div class="module-subtitle m-t-20">
+                                <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
+                                <p class="btn-list">
+                                    <a type="button" class="btn btn-success btn-round">Valider</a>
+                                    <a type="button" class="btn btn-danger btn-round">Supprimer</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /COMMENTS VALIDATION -->
+
+                    <!-- BLOG CONTROL -->
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-pencil"></i> BLOG MANAGER </h4>
+                            <div class="module-subtitle m-t-20">
+                                {% for allblogpost in allblogpost %}
+                                    <div class="post">
+
+                                        <div class="post-header post-header-small">
+
+                                            <div class="post-icon">
+                                                <span class="icon-documents"></span>
+                                            </div>
+
+                                            <h2 class="post-title font-alt"><a href="post-{{ allblogpost.id }}">{{ allblogpost.title }}</a></h2>
+                                            <div class="post-meta font-inc">
+                                                Écrit par {{ allblogpost.author }} | Publié le {{ allblogpost.date|date("d/m/Y") }}
+                                            </div>
+                                        </div>
+
+                                        <div class="post-entry">
+                                            <p class="text-justify">{{ allblogpost.content | slice(0, 250)}}...</p>
+                                        </div>
+
+                                        <p class="btn-list">
+                                            <a href="post-{{ allblogpost.id }}" target="_blank" type="button" class="btn btn-primary btn-round">Voir l'article</a>
+                                            <a type="button" class="btn btn-warning btn-round">Modifier</a>
+                                            <a type="button" class="btn btn-danger btn-round">Supprimer</a>
+                                        </p>
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /BLOG CONTROL -->
+
+            </div>
+     </section>
+    <!-- /ADMIN MODULE -->
+
+{% endblock %}
