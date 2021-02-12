@@ -1,0 +1,141 @@
+{% extends 'layout.twig' %}
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/home.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">Le blog de la photo</h1>
+                        <div class="module-subtitle font-inc align-center">
+                            <q>La photographie aide les gens à savoir</q>
+                        </div>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- LAST BLOGPOST -->
+    <section class="module">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <h2 class="module-title align-center font-alt">Derniers Articles</h2>
+                        {% for lastblog in lastblog %}
+                            <div class="post">
+
+                                <div class="post-header post-header-small">
+
+                                    <div class="post-icon">
+                                        <span class="icon-documents"></span>
+                                    </div>
+
+                                    <h2 class="post-title font-alt"><a href="post-{{ lastblog.id }}">{{ lastblog.title }}</a></h2>
+                                    <div class="post-meta font-inc">
+                                        Écrit par {{ lastblog.author }} | Publié le {{ lastblog.date|date("d/m/Y") }}
+                                    </div>
+                                </div>
+
+                                <div class="post-entry">
+                                    <p class="text-justify">{{ lastblog.content | slice(0, 250)}}...</p>
+                                </div>
+
+                                <div class="post-more font-inc">
+                                    <a href="post-{{ lastblog.id }}" class="more-link">Lire plus</a>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                        <p class="text-center"><a href="blog" class="btn btn-border-d btn-round btn-lg">Voir tous les articles</a></p>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE --> 
+            </div>
+     </section>
+    <!-- /LAST BLOGPOST -->
+
+    <!-- DIVIDER -->
+    <hr class="divider-w">
+    <!-- /DIVIDER -->
+
+    <!-- WHO -->
+    <section class="module">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h2 class="module-title align-center font-alt">Qui suis-je ?</h2>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p class="text-justify">Je suis <strong>Benjamin Roche</strong>, votre developpeur web. Basé à Annecy, je conçois des solutions pour répondre à vos besoins. Du projet le plus simple à la direction artistique globale d'une marque, je cherche des réponses sur mesure afin de créer des univers impactants et adaptés. Metia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+                        <p class="text-justify">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+                        <a href="assets/pdf/CV_BenjaminRoche.pdf" target="_blank" class="btn btn-d btn-round btn-block m-b-20">Découvrir mon CV</a>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <img src="assets/images/profil.jpg" alt="Photo de présentation">
+                    </div>   
+                </div>   
+            </div>
+     </section>
+    <!-- /WHO -->
+
+    <!-- DIVIDER -->
+    <hr class="divider-w">
+    <!-- /DIVIDER -->
+
+    <!-- CONTACT -->
+    <section class="module" id="contact">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <form id="contact-form" role="form" method="POST" action="home">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h2 class="module-title align-center font-alt">Contact</h2>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+
+                        <ul>
+                            {% if 'name_empty' in erreurs %}
+                                <li class="text-danger">Le nom / prénom doit être remplit.</li>
+                            {% endif %}
+
+                            {% if 'email_empty' in erreurs %}
+                                <li class="text-danger">L'email doit être remplit.</li>
+                            {% endif %}
+
+                            {% if 'message_empty' in erreurs %}
+                                <li class="text-danger">Le message doit être remplit.</li>
+                            {% endif %}
+                        </ul>
+                        <p class="bg-success text-center">{{ msg }}</p>
+
+                        <form id="contact-form" role="form" method="post" action="">
+                            <div class="form-group">
+                                <input type="text" id="cname" class="form-control" name="cname" placeholder="Votre nom / prénom ">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="cemail" name="cemail" class="form-control" placeholder="Votre email">
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="cmessage" name="cmessage" rows="7" placeholder="Ecrivez votre message ici..."></textarea>
+                            </div>
+                            <button type="submit" name="mailform" class="btn btn-round btn-g">Envoyer</button>
+                        </form>
+
+                    </div>
+                </div>    
+            </div>
+     </section>
+    <!-- /CONTACT -->
+{% endblock %}

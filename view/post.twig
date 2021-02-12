@@ -41,22 +41,26 @@
                     <div class="comments">
                         <h4 class="comment-title font-alt">Commentaires</h4>
 
-                        <!-- COMMENT 1 -->
+                        <!-- COMMENT SEE -->
                         <div class="comment clearfix">
-
+                            {% for comment in comments %}
                             <div class="comment-author font-inc">
-                                <i class="fa fa-fw"></i><span> John Doe</span>
+                                <i class="fa fa-fw"></i><span>{{ comment.username }}</span>
                             </div>
 
                             <div class="comment-body">
-                                <p>The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The European languages are members of the same family. Their separate existence is a myth.</p>
+                                <p class="text-capitalize">{{ comment.comment }}</p>
                             </div>
 
                             <div class="comment-meta font-inc">
-                                <i class="fa fa-clock-o"></i><span> Today, 5 hours ago</span>
-                            </div>
+                                <i class="fa fa-clock-o"></i><span> Publié le {{ comment.date|date("d/m/Y")}}</span>
+                            </div><br>
 
+                            {% else %}
+                                <p>Aucun commentaire pour cet article.</p>
+                            {% endfor %}
                         </div>
+
                     </div>
                     <!-- /COMMENTS -->
 
@@ -70,7 +74,8 @@
 
                             <p class="text-center"><a href="login">Connectez-vous</a> pour pouvoir commenter.</p>
                         {% else %}
-                        <form method="post" action="">
+                            <p class="text-danger">{{ erreur }}</p>
+                        <form method="post" action="post-{{ post.id }}">
 
                             <div class="form-group">
                                 <textarea class="form-control" id="comment" name="comment" rows="6" placeholder="Votre message..."></textarea>

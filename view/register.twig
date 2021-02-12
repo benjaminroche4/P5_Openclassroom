@@ -1,0 +1,83 @@
+{% extends 'layout.twig' %}
+{% block title %}S'inscrire{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/sections/_register.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">S'incrire</h1>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- REGISTER FORM -->
+    <section class="module">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h4 class="font-alt m-t-0 m-b-0">Enregistrez-vous</h4>
+                        <hr class="divider-w m-t-10 m-b-20">
+                        <ul>
+                        {% if 'user_exist' in erreurs %}         
+                            <li class="text-danger">Ce pseudo existe déjà, choisissez en un autre !</li>
+                        {% endif %} 
+
+                        {% if 'user_empty' in erreurs %}         
+                            <li class="text-danger">Le pseudo doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'email_exist' in erreurs %}
+                            <li class="text-danger">Cet email est déjà associé à un compte existant !</li>
+                        {% endif %}
+
+                        {% if 'email_empty' in erreurs %}         
+                            <li class="text-danger">L'email doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'password_dont_match' in erreurs %}
+                            <li class="text-danger">Vos mots de passes ne sont identiques.</li>
+                        {% endif %}
+
+                        {% if 'password_empty' in erreurs %}
+                            <li class="text-danger">Le mot de passe doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'password2_empty' in erreurs %}
+                            <li class="text-danger">La confirmation de mot de passe doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'user_length' in erreurs %}
+                            <li class="text-danger">Votre pseudo doit faire entre 3 et 60 caractères.</li>
+                        {% endif %}
+                        </ul>
+                        <p class="bg-success text-center">{{ msg }}</p>
+
+                        <form id="login-form" role="form" method="POST" action="register">
+                            <div class="form-group">
+                                <input type="text" id="rusername" class="form-control" name="rusername" placeholder="Pseudo">                           
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="remail" name="remail" class="form-control"  placeholder="E-mail">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="rpassword" name="rpassword" class="form-control" placeholder="Mot de passe">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="rpassword-confirm" name="rpassword-confirm" class="form-control" placeholder="Confirmez votre mot de passe">
+                            </div>
+                            <button type="submit" name="registerform" class="btn btn-round btn-g">Envoyer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+     </section>
+    <!-- /REGISTER FORM -->
+
+{% endblock %}

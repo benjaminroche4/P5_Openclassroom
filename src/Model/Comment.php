@@ -2,52 +2,71 @@
 namespace App\Model;
 
 use App\Service\DataBase;
-use http\Exception\InvalidArgumentException;
+
 
 /**
- * Récupération des BlogPosts.
+ * Gestion des commentaires
  */
 
-class BlogPost extends DataBase 
+class Comment extends DataBase
 {
-
-    public function findOneById($id)
+    public function findAllAcceptedByBlogId($blogId)
     {
-        $sql = 'SELECT blogpost.*, members.username username FROM blogpost JOIN members ON blogpost.author_id = members.id WHERE blogpost.id = :ID';
-        $blogpost = $this->selectFetch($sql,['ID'=>$id]);
-        return $blogpost;
+        $sql = "
+        SELECT  comment.id, members.username, comment.date, comment.comment, comment.accept   
+        FROM    comment
+                JOIN members ON comment.author_id = members.id 
+        WHERE   comment.accept = true AND comment.blog_id = :BLOGID";
+
+        return $this->selectFetchAll($sql, ['BLOGID'=> $blogId]);
     }
 
-	/**
-	 * Récupération des 3 derniers BlogPosts pour la page Home.
-	 */
-	public function LastBlogPost()
-	{
-		$sql = 'SELECT blogpost.*, members.username as author FROM blogpost INNER JOIN members on blogpost.author_id = members.id ORDER BY id DESC LIMIT 3';
-        $result = $this->sql($sql);
-        return $result;
-	}
+    public function findAllNotAccepted()
+    {
+        $sql = "
+        SELECT  comment.id, members.username, comment.date, comment.comment, comment.accept   
+        FROM    comment
+                JOIN members ON comment.author_id = members.id 
+        WHERE   comment.accept = false ";
 
-	/**
-	 * Récupération de tous les BlogPosts pour la page Blog.
-	 */
-	public function AllBlogPost()
-	{
-		$sql = 'SELECT blogpost.*, members.username as author FROM blogpost INNER JOIN members on blogpost.author_id = members.id ORDER BY id DESC';
-        $result = $this->sql($sql);
-        return $result;
-	}
+        return $this->selectFetchAll($sql,[]);
+    }
 
-	/**
-	 * Récupération du dernier id de la table BlogPost pour la page Blog.
-	 */
-	public function LastId()
-	{
-		$sql = 'SELECT id FROM blogpost ORDER BY id DESC LIMIT 1';
-        $result = $this->sql($sql);
-        return $result;
-	}
-	
+    public function findAllByBlogId($blogId)
+    {
+        $sql = "
+        SELECT  comment.id, members.username, comment.date, comment.comment, comment.accept   
+        FROM    comment
+                JOIN members ON comment.author_id = members.id 
+        WHERE   comment.blog_id = :BLOGID ";
+
+        return $this->selectFetchAll($sql, ['BLOGID'=>$blogId]);
+    }
+
+    public function accept($commentId)
+    {
+        $sql = "UPDATE comment SET accept = true WHERE id = :COMMENTID";
+        $this->sql($sql, ['COMMENTID'=> $commentId]);
+    }
+
+    public function delete($commentId)
+    {
+        $sql = "DELETE FROM comment WHERE id = :COMMENTID";
+        $this->sql($sql, ['COMMENTID'=> $commentId]);
+    }
+
+    public function deleteByBlogId($blogId)
+    {
+        $sql = "DELETE FROM comment WHERE blog_id = :BLOGID";
+        $this->sql($sql, ['BLOGID'=> $blogId]);
+    }
+
+    public function insert($blogId, $authorId, $comment)
+    {
+        $sql = "INSERT INTO comment(author_id, comment, blog_id, accept) VALUES (:AUTHORID, :COMMENT, :BLOGID, false)";
+        $this->sql($sql, ['AUTHORID'=>$authorId, 'COMMENT'=>$comment, 'BLOGID'=>$blogId]);
+    }
+
 
 }
 

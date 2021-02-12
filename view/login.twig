@@ -1,0 +1,44 @@
+{% extends 'layout.twig' %}
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/sections/_connexion.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">Connexion</h1>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- LOGIN FORM -->
+    <section class="module">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h4 class="font-alt m-t-0 m-b-0">Connectez-vous</h4>
+                        <hr class="divider-w m-t-10 m-b-20">
+                        <p class="text-danger">{{ msg }}</p>
+                        <form id="login-form" role="form" method="POST">
+                            <div class="form-group">
+                                <input type="text" id="lusername" class="form-control" name="lusername" placeholder="Pseudo">                           
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="lpassword" name="lpassword" class="form-control" placeholder="Mot de passe">
+                            </div>
+                            <button type="submit" name="loginform" class="btn btn-round btn-g">Envoyer</button>
+                        </form>
+                        <p class="text-center m-t-20">Pas encore de compte ? <a href="register">Inscrivez-vous</a></p>
+                    </div>
+                </div>
+            </div>
+     </section>
+    <!-- /LOGIN FORM -->
+
+{% endblock %}

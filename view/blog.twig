@@ -1,0 +1,60 @@
+{% extends 'layout.twig' %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/sections/_blog.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">Blog</h1>
+                        <div class="module-subtitle font-inc align-center">
+                            Découvrez toute l'actualité de la photographie
+                        </div>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- LAST BLOGPOST -->
+    <section class="module">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <h2 class="module-title align-center font-alt">Tous les articles</h2>
+                        {% for allblogpost in allblogpost %}
+                            <div class="post">
+
+                                <div class="post-header post-header-small">
+
+                                    <div class="post-icon">
+                                        <span class="icon-documents"></span>
+                                    </div>
+
+                                    <h2 class="post-title font-alt"><a href="post-{{ allblogpost.id }}">{{ allblogpost.title }}</a></h2>
+                                    <div class="post-meta font-inc">
+                                        Écrit par {{ allblogpost.author }} | Publié le {{ allblogpost.date|date("d/m/Y") }}
+                                    </div>
+                                </div>
+
+                                <div class="post-entry">
+                                    <p class="text-justify">{{ allblogpost.content | slice(0, 250)}}...</p>
+                                </div>
+
+                                <div class="post-more font-inc">
+                                    <a href="post-{{ allblogpost.id }}" class="more-link">Lire plus</a>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+     </section>
+    <!-- /LAST BLOGPOST -->
+
+{% endblock %}

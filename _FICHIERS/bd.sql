@@ -117,7 +117,7 @@ ALTER TABLE `blogpost`
 --
 -- Indexes for table `comments`
 --
-ALTER TABLE `comments`
+ALTER TABLE comment
     ADD PRIMARY KEY (`id`),
   ADD KEY `author_id` (`author_id`),
   ADD KEY `blog_id` (`blog_id`);
@@ -147,7 +147,7 @@ ALTER TABLE `blogpost`
 --
 -- AUTO_INCREMENT for table `comments`
 --
-ALTER TABLE `comments`
+ALTER TABLE comment
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -169,6 +169,6 @@ ALTER TABLE `blogpost`
 --
 -- Constraints for table `comments`
 --
-ALTER TABLE `comments`
+ALTER TABLE comment
     ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `members` (`id`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`blog_id`) REFERENCES `blogpost` (`id`);

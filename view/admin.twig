@@ -29,11 +29,15 @@
                         <div class="col-sm-8 col-sm-offset-2">
                             <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-comment-o"></i> Commentaires à valider :</h4>
                             <div class="module-subtitle m-t-20">
-                                <p>A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</p>
+                                {% for comment in comments %}
+                                <p>{{ comment.comment }}</p>
                                 <p class="btn-list">
-                                    <a type="button" class="btn btn-success btn-round">Valider</a>
-                                    <a type="button" class="btn btn-danger btn-round">Supprimer</a>
+                                    <a href="adminAcceptComment-{{ comment.id }}" type="button" class="btn btn-success btn-round">Valider</a>
+                                    <a href="adminDeleteComment-{{ comment.id }}" type="button" class="btn btn-danger btn-round">Supprimer</a>
                                 </p>
+                                {% else %}
+                                    <p class="text-center"> <i class="fa fa-check"></i> Aucun commentaire à valider.</p>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -66,7 +70,7 @@
                                         <p class="btn-list">
                                             <a href="post-{{ allblogpost.id }}" target="_blank" type="button" class="btn btn-primary btn-round">Voir l'article</a>
                                             <a type="button" class="btn btn-warning btn-round">Modifier</a>
-                                            <a type="button" class="btn btn-danger btn-round">Supprimer</a>
+                                            <a href="adminDeleteBlogPost-{{ allblogpost.id }}" type="button" class="btn btn-danger btn-round">Supprimer</a>
                                         </p>
 
                                     </div>

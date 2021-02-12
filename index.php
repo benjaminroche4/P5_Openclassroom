@@ -14,6 +14,7 @@ $router = new App\Router\Router($_GET['url']);
 $router->post('/post-:postId', "FrontEnd#commentAdd");
 $router->get('/post-:id', "FrontEnd#post");
 $router->get('/logout', "FrontEnd#logout");
+$router->get('/', "FrontEnd#home");
 $router->get('/home', "FrontEnd#home");
 $router->post('/home', "FrontEnd#homePost");
 $router->get('/blog', "FrontEnd#blog");
@@ -26,8 +27,9 @@ $router->get('/cv', "FrontEnd#cv");
 
 //Partie BACK
 $router->get('/admin', "BackEnd#admin");
-
-
+$router->get('/adminDeleteComment-:idComment', "BackEnd#deleteComment");
+$router->get('/adminAcceptComment-:idComment', "BackEnd#acceptComment");
+$router->get('/adminDeleteBlogPost-:idBlog', "BackEnd#deleteBlogPost");
 //On démarre l'appilaction 
 $router->run();
 

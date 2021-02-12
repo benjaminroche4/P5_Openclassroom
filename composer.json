@@ -1,0 +1,10 @@
+{
+    "name": "blog/ocr",
+    "authors": [
+        {
+            "name": "Benjamin Roche",
+            "email": "benjamin.roche4@gmail.com"
+        }
+    ],
+    "require": {}
+}
