@@ -43,10 +43,18 @@
                     </div>
                     <!-- /COMMENTS VALIDATION -->
 
+                    <!-- CREATE NEW BLOG POST -->
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-edit"></i><a href="adminCreateBlogPost" style="color: #3c763d;"> Écrire un nouvel article</a></h4>
+                        </div>
+                    </div>
+                    <!-- /CREATE NEW BLOG POST -->
+
                     <!-- BLOG CONTROL -->
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2">
-                            <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-pencil"></i> BLOG MANAGER </h4>
+                            <h4 class="font-alt text-success text-center m-b-40" style="font-weight: bold;"><i class="fa fa-pencil"></i> Blog Manager</h4>
                             <div class="module-subtitle m-t-20">
                                 {% for allblogpost in allblogpost %}
                                     <div class="post">
@@ -69,7 +77,7 @@
 
                                         <p class="btn-list">
                                             <a href="post-{{ allblogpost.id }}" target="_blank" type="button" class="btn btn-primary btn-round">Voir l'article</a>
-                                            <a type="button" class="btn btn-warning btn-round">Modifier</a>
+                                            <a href="adminEditBlogPost-{{ allblogpost.id }}" type="button" class="btn btn-warning btn-round">Modifier</a>
                                             <a href="adminDeleteBlogPost-{{ allblogpost.id }}" type="button" class="btn btn-danger btn-round">Supprimer</a>
                                         </p>
 

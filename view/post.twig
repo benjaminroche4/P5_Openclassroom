@@ -75,6 +75,7 @@
                             <p class="text-center"><a href="login">Connectez-vous</a> pour pouvoir commenter.</p>
                         {% else %}
                             <p class="text-danger">{{ erreur }}</p>
+                            <p class="text-success">{{ msg }}</p>
                         <form method="post" action="post-{{ post.id }}">
 
                             <div class="form-group">

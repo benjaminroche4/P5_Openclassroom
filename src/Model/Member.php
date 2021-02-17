@@ -4,7 +4,7 @@ namespace App\Model;
 use App\Service\DataBase;
 
 /**
- * Enregistrement d'un membre dans la BDD.
+ * Gestion des membres.
  */
 
 class Member extends DataBase
@@ -12,7 +12,7 @@ class Member extends DataBase
 
     /**
      * Recupère l'utilisateur correspondant et le renvoit sous forme de tableau
-     * associatif ou renvoit false si n'existe pas
+     * associatif ou renvoit false si il n'existe pas
      * @param $username
      * @param $password
      * @return mixed
@@ -26,9 +26,11 @@ class Member extends DataBase
         return $username;
     }
 
+    /**
+     * Vérfie si le pseudo existe ou non.
+     */
 	public function userExist($username)
 	{
-		// Vérifie que le pseudo existe ou non.
 	    $stm = $this->getConnection()->prepare("SELECT * FROM members WHERE username = :username");
 	    $stm->bindParam(':username', $username);
 	    $stm->execute();
@@ -42,6 +44,9 @@ class Member extends DataBase
 	    }
 	}
 
+    /**
+     * Vérfie si l'email existe déjà.
+     */
 	public function emailExist($email)
 	{
 		// Vérifie que l'email existe ou non.
@@ -58,6 +63,9 @@ class Member extends DataBase
 	    }
 	}
 
+    /**
+     * Insert un utilisateur dans la BDD.
+     */
 	public function userInsert($username, $email, $password)
 	{
 		// Insert l'utilisateur dans la base de données.

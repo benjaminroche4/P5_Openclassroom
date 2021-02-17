@@ -5,12 +5,41 @@ use App\Service\DataBase;
 use http\Exception\InvalidArgumentException;
 
 /**
- * Récupération des BlogPosts.
+ * Gestion des BlogPosts.
  */
 
 class BlogPost extends DataBase 
 {
+    /**
+     * Modifie un BlogPost (update)
+     */
+    public function update($id, $title, $content)
+    {
+        $stm = $this->getConnection()->prepare("UPDATE blogpost SET title = :TITLE, content = :CONTENT 
+        WHERE id = :ID");
+        $stm->bindParam('ID', $id);
+        $stm->bindParam('TITLE', $title);
+        $stm->bindParam('CONTENT', $content);
+        $stm->execute();
+    }
 
+    /**
+     * Insert un BlogPost dans la BDD.
+     */
+    public function blogInsert($authorId, $title, $content)
+    {
+        // Insert le BlogPost dans la base de données.
+        $stm = $this->getConnection()->prepare("INSERT INTO blogpost(author_id, title, content) 
+        VALUES(:AUTHORID, :TITLE, :CONTENT)");
+        $stm->bindParam('AUTHORID', $authorId);
+        $stm->bindParam('TITLE', $title);
+        $stm->bindParam('CONTENT', $content);
+        $stm->execute();
+    }
+
+    /**
+     * Récupère un BlogPost par rapport à son Id.
+     */
     public function findOneById($id)
     {
         $sql = 'SELECT blogpost.*, members.username username FROM blogpost JOIN members ON blogpost.author_id = members.id WHERE blogpost.id = :ID';
@@ -19,7 +48,7 @@ class BlogPost extends DataBase
     }
 
 	/**
-	 * Récupération des 3 derniers BlogPosts pour la page Home.
+	 * Récupération des 3 derniers BlogPosts pour la page d'accueil.
 	 */
 	public function LastBlogPost()
 	{
@@ -39,7 +68,7 @@ class BlogPost extends DataBase
 	}
 
 	/**
-     * Supprime un blogPost
+     * Supprime un blogPost dans la partie Admin
      */
     public function delete($blogId)
     {
@@ -48,4 +77,11 @@ class BlogPost extends DataBase
     }
 
 }
+
+
+// crée la route (get)
+// recuperation blog post
+// envoi le post à la vue
+// remplissage des champs (value)
+
 

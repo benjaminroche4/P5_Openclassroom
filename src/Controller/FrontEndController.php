@@ -26,7 +26,7 @@ class FrontEndController
 	}
 
     /**
-     * Ajout de commentaire
+     * Ajout d'un commentaire dans la BDD
      */
     public function commentAdd($postId)
     {
@@ -36,7 +36,6 @@ class FrontEndController
 
         if( strlen($comment) < 10 )
         {
-
             //charge le post
             $blogpost = new BlogPost();
             $post = $blogpost->findOneById($postId);
@@ -45,35 +44,42 @@ class FrontEndController
             $comments = $this->comment->findAllAcceptedByBlogId($postId);
 
             //affiche la vue
-            $this->renderer->render('post', ['post' => $post, 'erreur'=>'Votre message doit compoter au moins 10 caractères.',
+            $this->renderer->render('post', ['post' => $post, 'erreur'=>'Votre message 
+            doit compoter au moins 10 caractères.',
                 'comments'=> $comments]);
             return;
-
         }
 
-        // Données vqlides
+        // Données valide on continue
 
-        //insertion
+        //Insertion
         $model = new Comment();
         $model->insert($postId,$user['id'],$comment);
 
-        //redirection
-        header('Location:post-'.$postId);
+        // Charge les commentaires
+        $comments = $this->comment->findAllAcceptedByBlogId($postId);
+        //charge le post
+        $blogpost = new BlogPost();
+        $post = $blogpost->findOneById($postId);
+        //affiche la vue
+        $this->renderer->render('post', ['post' => $post, 'msg'=>'Votre message a été soumis à vérification.',
+            'comments'=> $comments]);
+
     }
 
     /**
-     * Post (article)
+     * Affiche le post (article) + commentaires
      */
     public function post($id)
     {
-        //charge le post
+        //Charge le post
         $blogpost = new BlogPost();
         $post = $blogpost->findOneById($id);
 
-        // Chqrge les commentaires
+        // Charge les commentaires
         $comments = $this->comment->findAllAcceptedByBlogId($id);
 
-        //affiche la vue
+        //Affiche la vue
         $this->renderer->render('post', ['post' => $post, 'comments'=>$comments]);
     }
 
@@ -88,7 +94,7 @@ class FrontEndController
     }
 
 	/**
-	 * Home
+	 * Affiche la page d'accueil
 	 */
 	public function home()
 	{
@@ -98,7 +104,7 @@ class FrontEndController
 	}
 
     /**
-     * HomePost (contact)
+     * Formulaire de contact page d'accueil (envois par mail)
      */
     public function homePost()
     {
@@ -154,12 +160,13 @@ class FrontEndController
 
         mail("benjamin.annexe@gmail.com", "Contact du site internet", $message, $header);
 
-        $this->renderer->render('home', ['msg' => 'Votre message à bien été envoyé. Nous vous contacterons dans les plus brefs délais.',  'lastblog' => $lastblog]);
+        $this->renderer->render('home', ['msg' => 'Votre message à bien été envoyé. 
+        Nous vous contacterons dans les plus brefs délais.',  'lastblog' => $lastblog]);
 
     }
 
 	/**
-	 * Liste Blog Page
+	 * Liste l'ensemble des BlogPosts sur la page Blog
 	 */	
 	public function blog()
 	{
@@ -168,7 +175,7 @@ class FrontEndController
 	}
 
     /**
-     * Login
+     * Affiche la page de connexion
      */
     public function login()
     {
@@ -176,7 +183,7 @@ class FrontEndController
     }
 
     /**
-     * LoginPost
+     * Gère le formulaire de connexion
      */
     public function loginPost()
     {
@@ -203,9 +210,8 @@ class FrontEndController
 
     }
 
-
 	/**
-	 * Inscription
+	 * Affiche la page d'inscription
 	 */
 	public function register()
 	{
@@ -213,7 +219,7 @@ class FrontEndController
 	}
 
 	/**
-	 * InscriptionPost
+	 * Gère l'inscription d'un utilisateur
 	 */
 	public function registerPost()
 	{
@@ -277,14 +283,15 @@ class FrontEndController
 			return;
 		}
 
-		// Si pas d'erreurs
+		// Si pas d'erreurs on continue
 
         // Crypte le MDP
         $password = password_hash( $password, PASSWORD_DEFAULT );
 
         // Insertion dans la BDD
         $userinsert = $this->member->userInsert($username, $email, $password);
-        $this->renderer->render('register', ['msg' => 'Félicitation ! Votre compte à bien été crée, vous pouvez à présent vous connecter.']);
+        $this->renderer->render('register', ['msg' => 'Félicitation ! Votre compte à bien été crée, 
+        vous pouvez à présent vous connecter.']);
 
 	}
 

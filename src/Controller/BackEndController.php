@@ -25,6 +25,35 @@ class BackEndController
         $this->comment = new Comment();
     }
 
+    private function valideBlog($title, $content)
+    {
+        $titlelength = mb_strlen($title);
+        $contentlength = mb_strlen($content);
+
+        $erreurs = [];
+
+        if(empty($title))
+        {
+            $erreurs[] = 'title_empty';
+        }
+
+        if(empty($content))
+        {
+            $erreurs[] = 'content_empty';
+        }
+
+        if($titlelength < 10 || $titlelength > 255)
+        {
+            $erreurs[] = 'title_length';
+        }
+
+        if($contentlength < 10)
+        {
+            $erreurs[] = 'content_length';
+        }
+        return $erreurs;
+    }
+
     /**
      * Sécurisation espace Admin
      */
@@ -39,9 +68,85 @@ class BackEndController
         }
     }
 
+    /**
+     * Affiche la page de modification d'un blog Post
+     */
+    public function editBlogPost($idBlog)
+    {
+        $this->secuirtyCheck();
+        $blog = $this->blogPost->findOneById($idBlog);
+
+        $this->renderer->render('edit-blog', ['blog'=>$blog]);
+    }
 
     /**
-     * Admin
+     * Update un BlogPost
+     */
+    public function editBlogPostPost($idBlog)
+    {
+        $this->secuirtyCheck();
+
+        $title = htmlspecialchars($_POST['title-blog']);
+        $content = htmlspecialchars($_POST['content-blog']);
+
+        $blog = $this->blogPost->findOneById($idBlog);
+
+        $erreurs = $this->valideBlog($title, $content);
+
+        // Renvoie au formulaire les erreurs.
+        if(count($erreurs) > 0)
+        {
+            $this->renderer->render('edit-blog', ['erreurs' => $erreurs, 'blog'=>$blog]);
+            return;
+        }
+
+        // Insertion dans la BDD
+        $this->blogPost->update($idBlog, $title, $content);
+
+        $blog = $this->blogPost->findOneById($idBlog);
+
+        $this->renderer->render('edit-blog', ['msg' => 'Votre article à bien été modifié.', 'blog'=> $blog]);
+
+    }
+
+    /**
+     * Affiche la page Création d'un blog Post
+     */
+    public function createBlogPost()
+    {
+        $this->secuirtyCheck();
+
+        $this->renderer->render('create-blog');
+    }
+
+    /**
+     * Gère la création d'un nouveau Blog Post
+     */
+    public function createBlogPostPost()
+    {
+        $this->secuirtyCheck();
+
+        $title = htmlspecialchars($_POST['title-blog']);
+        $content = htmlspecialchars($_POST['content-blog']);
+        $user = $_SESSION['user'];
+
+        $erreurs = $this->valideBlog($title, $content);
+
+        // Renvoie au formulaire les erreurs.
+        if(count($erreurs) > 0)
+        {
+            $this->renderer->render('create-blog', ['erreurs' => $erreurs]);
+            return;
+        }
+
+        // Insertion dans la BDD
+        $bloginsert = $this->blogPost->blogInsert($user['id'], $title, $content);
+        $this->renderer->render('create-blog', ['msg' => 'Votre article à bien été publié.']);
+
+    }
+
+    /**
+     * Affiche le panel admin + commentaires à valider + tous les BlogPosts
      */
     public function admin()
     {
@@ -83,7 +188,7 @@ class BackEndController
     }
 
     /**
-     * Supprime un BlogPost et redirige sur Admin
+     * Supprime un BlogPost + les commentaires associés et redirige sur Admin
      */
     public function deleteBlogPost($idBlog)
     {

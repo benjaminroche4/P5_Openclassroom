@@ -1,0 +1,65 @@
+{% extends 'layout.twig' %}
+{% block title %}Modifier un article{% endblock %}
+
+{% block content %}
+
+    <!-- HOME -->
+    <section class="module module-header bg-dark bg-dark-50" data-background="assets/images/section-7.jpg">
+            <div class="container">
+                <!-- MODULE TITLE -->
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <h1 class="module-title font-alt align-center">Modifier un article</h1>
+                    </div>
+                </div>
+                <!-- /MODULE TITLE -->
+            </div>
+    </section >
+    <!-- /HOME -->
+
+    <!-- NEW BLOGPOST -->
+    <section class="module">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <ul>
+
+                        {% if 'title_empty' in erreurs %}
+                            <li class="text-danger">Le titre doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'content_empty' in erreurs %}
+                            <li class="text-danger">Le contenu de l'article doit être remplit.</li>
+                        {% endif %}
+
+                        {% if 'title_length' in erreurs %}
+                            <li class="text-danger">Le titre doit faire au minimum 10 caractères.</li>
+                        {% endif %}
+
+                        {% if 'content_length' in erreurs %}
+                            <li class="text-danger">Le contenu doit faire au minimum 10 caractères.</li>
+                        {% endif %}
+
+                    </ul>
+                    <p class="bg-success text-center">{{ msg }}</p>
+                    
+                    <form id="editBlog-form" role="form" method="POST" action="">
+
+                        <div class="form-group">
+                            <input type="text" name="title-blog" id="title-blog" class="form-control" value="{{ blog.title }}" placeholder="Titre de l'article..">
+                        </div>
+
+                        <div class="form-group">
+                            <textarea name="content-blog" id="content-blog"  class="form-control" placeholder="Contenu de l'article.." rows="12" >{{ blog.content }}</textarea>
+                        </div>
+
+                        <button type="submit" name="editblog" class="btn btn-round btn-g">Publier</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /NEW BLOGPOST -->
+
+{% endblock %}
