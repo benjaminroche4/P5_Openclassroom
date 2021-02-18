@@ -21,7 +21,6 @@ $router->get('/login', "FrontEnd#login");
 $router->post('/login', "FrontEnd#loginPost");
 $router->get('/register', "FrontEnd#register");
 $router->post('/register', "FrontEnd#registerPost");
-$router->get('/cv', "FrontEnd#cv");
 
 
 //Partie BACK
@@ -34,13 +33,15 @@ $router->post('/adminCreateBlogPost', "BackEnd#createBlogPostPost");
 $router->get('/adminEditBlogPost-:idBlog', "BackEnd#editBlogPost");
 $router->post('/adminEditBlogPost-:idBlog', "BackEnd#editBlogPostPost");
 
-//On démarre l'appilaction
+
 try
 {
+    //On démarre l'appilaction
     $router->run();
 }
 catch (\App\Router\RouterException $e)
 {
+    //Si une page n'est pas trouvé, retour à la page d'accueil
     header('Location: home');
 }
 

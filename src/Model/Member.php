@@ -68,8 +68,8 @@ class Member extends DataBase
      */
 	public function userInsert($username, $email, $password)
 	{
-		// Insert l'utilisateur dans la base de données.
-	    $stm = $this->getConnection()->prepare("INSERT INTO members(username, email, password, date_add) VALUES(:username, :email, :password, NOW())");
+	    $stm = $this->getConnection()->prepare("INSERT INTO members(username, email, password, date_add) 
+        VALUES(:username, :email, :password, NOW())");
 	    $stm->bindParam('username', $username);
         $stm->bindParam('email', $email);
         $stm->bindParam('password', $password);

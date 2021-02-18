@@ -58,9 +58,11 @@ class FrontEndController
 
         // Charge les commentaires
         $comments = $this->comment->findAllAcceptedByBlogId($postId);
+
         //charge le post
         $blogpost = new BlogPost();
         $post = $blogpost->findOneById($postId);
+
         //affiche la vue
         $this->renderer->render('post', ['post' => $post, 'msg'=>'Votre message a été soumis à vérification.',
             'comments'=> $comments]);

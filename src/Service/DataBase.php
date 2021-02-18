@@ -2,7 +2,7 @@
 namespace App\Service;
 
 /**
- * Connexion à la base de donnée.
+ * Connexion à la base de données.
  */
 
 abstract class Database

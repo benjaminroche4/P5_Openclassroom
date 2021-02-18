@@ -26,7 +26,7 @@ class BackEndController
     }
 
     /**
-     * Condition pour valider un BlogPost u
+     * Condition pour valider un BlogPost
      */
     private function valideBlog($title, $content)
     {
@@ -204,6 +204,5 @@ class BackEndController
         //redirection vers admin
         header('Location:admin');
     }
-
 
 }
