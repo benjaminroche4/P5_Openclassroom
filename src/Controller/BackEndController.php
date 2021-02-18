@@ -25,6 +25,9 @@ class BackEndController
         $this->comment = new Comment();
     }
 
+    /**
+     * Condition pour valider un BlogPost u
+     */
     private function valideBlog($title, $content)
     {
         $titlelength = mb_strlen($title);
