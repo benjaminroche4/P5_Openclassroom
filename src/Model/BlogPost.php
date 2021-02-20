@@ -39,7 +39,7 @@ class BlogPost extends DataBase
     }
 
     /**
-     * Récupère un BlogPost par rapport à son Id.
+     * Récupère un BlogPost par rapport à son ID.
      */
     public function findOneById($id)
     {
