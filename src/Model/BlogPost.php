@@ -8,77 +8,105 @@ use http\Exception\InvalidArgumentException;
  * Gestion des BlogPosts.
  */
 
-class BlogPost extends DataBase 
+class BlogPost
 {
 
-    /**
-     * Modifie un BlogPost (update)
-     */
-    public function update($id, $title, $content)
-    {
-        $stm = $this->getConnection()->prepare("UPDATE blogpost SET title = :TITLE, content = :CONTENT 
-        WHERE id = :ID");
-        $stm->bindParam('ID', $id);
-        $stm->bindParam('TITLE', $title);
-        $stm->bindParam('CONTENT', $content);
-        $stm->execute();
-    }
+    private $id;
+    private $author_id;
+    private $title;
+    private $content;
+    private $date;
 
     /**
-     * Insert un BlogPost dans la BDD.
+     * @return mixed
      */
-    public function blogInsert($authorId, $title, $content)
+    public function getId()
     {
-        // Insert le BlogPost dans la base de données.
-        $stm = $this->getConnection()->prepare("INSERT INTO blogpost(author_id, title, content) 
-        VALUES(:AUTHORID, :TITLE, :CONTENT)");
-        $stm->bindParam('AUTHORID', $authorId);
-        $stm->bindParam('TITLE', $title);
-        $stm->bindParam('CONTENT', $content);
-        $stm->execute();
+        return $this->id;
     }
 
     /**
-     * Récupère un BlogPost par rapport à son iD.
+     * @param mixed $id
+     * @return BlogPost
      */
-    public function findOneById($id)
+    public function setId($id)
     {
-        $sql = 'SELECT blogpost.*, members.username username FROM blogpost JOIN members ON blogpost.author_id = members.id 
-        WHERE blogpost.id = :ID';
-        $blogpost = $this->selectFetch($sql,['ID'=>$id]);
-        return $blogpost;
+        $this->id = $id;
+        return $this;
     }
 
-	/**
-	 * Récupération des 3 derniers BlogPosts pour la page d'accueil.
-	 */
-	public function LastBlogPost()
-	{
-		$sql = 'SELECT blogpost.*, members.username as author FROM blogpost INNER JOIN members on 
-        blogpost.author_id = members.id ORDER BY id DESC LIMIT 3';
-        $result = $this->sql($sql);
-        return $result;
-	}
-
-	/**
-	 * Récupération de tous les BlogPosts pour la page Blog.
-	 */
-	public function AllBlogPost()
-	{
-		$sql = 'SELECT blogpost.*, members.username as author FROM blogpost INNER JOIN members 
-        on blogpost.author_id = members.id ORDER BY id DESC';
-        $result = $this->sql($sql);
-        return $result;
-	}
-
-	/**
-     * Supprime un blogPost dans la partie Admin
+    /**
+     * @return mixed
      */
-    public function delete($blogId)
+    public function getAuthorId()
     {
-        $sql = "DELETE FROM blogpost WHERE id = :BLOGID";
-        $this->sql($sql, ['BLOGID'=> $blogId]);
+        return $this->author_id;
     }
+
+    /**
+     * @param mixed $author_id
+     * @return BlogPost
+     */
+    public function setAuthorId($author_id)
+    {
+        $this->author_id = $author_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     * @return BlogPost
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     * @return BlogPost
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     * @return BlogPost
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
 
 }
 

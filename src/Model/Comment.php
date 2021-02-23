@@ -8,73 +8,123 @@ use App\Service\DataBase;
  * Gestion des commentaires.
  */
 
-class Comment extends DataBase
+class Comment
 {
 
-    /**
-     * Affiche les commentaires si la valeur est : true.
-     */
-    public function findAllAcceptedByBlogId($blogId)
-    {
-        $sql = "
-        SELECT  comment.id, members.username, comment.date, comment.comment, comment.accept   
-        FROM    comment
-                JOIN members ON comment.author_id = members.id 
-        WHERE   comment.accept = true AND comment.blog_id = :BLOGID";
+    private $id;
+    private $author_id;
+    private $comment;
+    private $date;
+    private $blog_id;
+    private $accept;
 
-        return $this->selectFetchAll($sql, ['BLOGID'=> $blogId]);
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
-     * Affiche les commentaires si la valeur est : false.
+     * @param mixed $id
+     * @return Comment
      */
-    public function findAllNotAccepted()
+    public function setId($id)
     {
-        $sql = "
-        SELECT  comment.id, members.username, comment.date, comment.comment, comment.accept   
-        FROM    comment
-                JOIN members ON comment.author_id = members.id 
-        WHERE   comment.accept = false ";
-
-        return $this->selectFetchAll($sql,[]);
+        $this->id = $id;
+        return $this;
     }
 
     /**
-     * Acceptation d'un commentaire.
+     * @return mixed
      */
-    public function accept($commentId)
+    public function getAuthorId()
     {
-        $sql = "UPDATE comment SET accept = true WHERE id = :COMMENTID";
-        $this->sql($sql, ['COMMENTID'=> $commentId]);
+        return $this->author_id;
     }
 
     /**
-     * Suppresion d'un commentaire (via panel admin).
+     * @param mixed $author_id
+     * @return Comment
      */
-    public function delete($commentId)
+    public function setAuthorId($author_id)
     {
-        $sql = "DELETE FROM comment WHERE id = :COMMENTID";
-        $this->sql($sql, ['COMMENTID'=> $commentId]);
+        $this->author_id = $author_id;
+        return $this;
     }
 
     /**
-     * Suppresion des commentaires par un BlogId (via panel admin).
+     * @return mixed
      */
-    public function deleteByBlogId($blogId)
+    public function getComment()
     {
-        $sql = "DELETE FROM comment WHERE blog_id = :BLOGID";
-        $this->sql($sql, ['BLOGID'=> $blogId]);
+        return $this->comment;
     }
 
     /**
-     * Insert un commentaire dans la BDD.
+     * @param mixed $comment
+     * @return Comment
      */
-    public function insert($blogId, $authorId, $comment)
+    public function setComment($comment)
     {
-        $sql = "INSERT INTO comment(author_id, comment, blog_id, accept) VALUES (:AUTHORID, :COMMENT, :BLOGID, false)";
-        $this->sql($sql, ['AUTHORID'=>$authorId, 'COMMENT'=>$comment, 'BLOGID'=>$blogId]);
+        $this->comment = $comment;
+        return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     * @return Comment
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBlogId()
+    {
+        return $this->blog_id;
+    }
+
+    /**
+     * @param mixed $blog_id
+     * @return Comment
+     */
+    public function setBlogId($blog_id)
+    {
+        $this->blog_id = $blog_id;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccept()
+    {
+        return $this->accept;
+    }
+
+    /**
+     * @param mixed $accept
+     * @return Comment
+     */
+    public function setAccept($accept)
+    {
+        $this->accept = $accept;
+        return $this;
+    }
 
 }
 

@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Manager\BlogPostManager;
+use App\Manager\CommentManager;
+use App\Manager\MemberManager;
 use App\Model\BlogPost;
 use App\Model\Comment;
 use App\Service\TwigRenderer;
@@ -13,16 +16,16 @@ use App\Model\Member;
 class FrontEndController
 {
 	private $renderer;
-	private $blogPost;
-	private $member;
-	private $comment;
+	private $blogPostManager;
+	private $memberManager;
+	private $commentManager;
 
 	public function __construct()
 	{
 		$this->renderer = new TwigRenderer();
-		$this->blogPost = new BlogPost();
-		$this->member = new Member();
-		$this->comment = new Comment();
+		$this->blogPostManager = new BlogPostManager();
+		$this->memberManager = new MemberManager();
+		$this->commentManager = new CommentManager();
 	}
 
     /**
@@ -41,7 +44,7 @@ class FrontEndController
             $post = $blogpost->findOneById($postId);
 
             // Charge les commentaires
-            $comments = $this->comment->findAllAcceptedByBlogId($postId);
+            $comments = $this->commentManager->findAllAcceptedByBlogId($postId);
 
             //affiche la vue
             $this->renderer->render('post', ['post' => $post, 'erreur'=>'Votre message 
@@ -57,7 +60,7 @@ class FrontEndController
         $model->insert($postId,$user['id'],$comment);
 
         // Charge les commentaires
-        $comments = $this->comment->findAllAcceptedByBlogId($postId);
+        $comments = $this->commentManager->findAllAcceptedByBlogId($postId);
 
         //charge le post
         $blogpost = new BlogPost();
@@ -75,11 +78,10 @@ class FrontEndController
     public function post($id)
     {
         //Charge le post
-        $blogpost = new BlogPost();
-        $post = $blogpost->findOneById($id);
+        $post = $this->blogPostManager->findOneById($id);
 
         // Charge les commentaires
-        $comments = $this->comment->findAllAcceptedByBlogId($id);
+        $comments = $this->commentManager->findAllAcceptedByBlogId($id);
 
         //Affiche la vue
         $this->renderer->render('post', ['post' => $post, 'comments'=>$comments]);
@@ -100,7 +102,8 @@ class FrontEndController
 	 */
 	public function home()
 	{
-		$lastblog = $this->blogPost->LastBlogPost();
+		$manager = new BlogPostManager();
+		$lastblog = $manager->lastBlogPost();
 
 		$this->renderer->render('home', ['lastblog' => $lastblog]);
 	}
@@ -110,7 +113,7 @@ class FrontEndController
      */
     public function homePost()
     {
-        $lastblog = $this->blogPost->LastBlogPost();
+        $lastblog = $this->blogPostManager->lastBlogPost();
 
         $name = htmlspecialchars($_POST['cname']);
         $email = htmlspecialchars($_POST['cemail']);
@@ -172,7 +175,7 @@ class FrontEndController
 	 */	
 	public function blog()
 	{
-		$allblogpost = $this->blogPost->AllBlogPost();
+		$allblogpost = $this->blogPostManager->AllBlogPost();
 		$this->renderer->render('blog', ['allblogpost' => $allblogpost]);
 	}
 
@@ -196,7 +199,7 @@ class FrontEndController
 
 
         // Appel le model vérifs
-        $user = $this->member->findByUsername($username);
+        $user = $this->memberManager->findByUsername($username);
 
         // Si erreur alors msg et quitte
         if($user == false || !password_verify($password, $user['password'])){
@@ -232,8 +235,8 @@ class FrontEndController
 
 		$usernamelength = mb_strlen($username);
 
-		$userexist = $this->member->userExist($username);
-		$emailexist = $this->member->emailExist($email);
+		$userexist = $this->memberManager->userExist($username);
+		$emailexist = $this->memberManager->emailExist($email);
 
 
 		$erreurs = [];
@@ -291,7 +294,7 @@ class FrontEndController
         $password = password_hash( $password, PASSWORD_DEFAULT );
 
         // Insertion dans la BDD
-        $userinsert = $this->member->userInsert($username, $email, $password);
+        $userinsert = $this->memberManager->userInsert($username, $email, $password);
         $this->renderer->render('register', ['msg' => 'Félicitation ! Votre compte à bien été crée, 
         vous pouvez à présent vous connecter.']);
 

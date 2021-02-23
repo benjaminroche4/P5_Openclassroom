@@ -31,6 +31,24 @@ abstract class Database
         return $stm->fetchAll();
     }
 
+    public function selectFetchAsObject($sql, $parameters = [], $class)
+    {
+        $pdo = $this->getConnection();
+        $stm = $pdo->prepare($sql);
+        $stm->execute($parameters);
+
+        return $stm->fetchObject($class);
+    }
+
+    public function selectFetchAllAsObjects($sql, $parameters = [], $class)
+    {
+        $pdo = $this->getConnection();
+        $stm = $pdo->prepare($sql);
+        $stm->execute($parameters);
+
+        return $stm->fetchAll(\PDO::FETCH_CLASS, $class);
+    }
+
     private function checkConnection()
     {
         if ($this->connection === null) {

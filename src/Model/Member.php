@@ -7,73 +7,121 @@ use App\Service\DataBase;
  * Gestion des membres.
  */
 
-class Member extends DataBase
+class Member
 {
+    private $id;
+    private $username;
+    private $password;
+    private $email;
+    private $date_add;
+    private $role;
 
     /**
-     * Recupère l'utilisateur correspondant et le renvoit sous forme de tableau
-     * associatif ou renvoit false si il n'existe pas
-     * @param $username
-     * @param $password
      * @return mixed
      */
-    public function findByUsername($username){
-        $stm = $this->getConnection()->prepare("SELECT * FROM members WHERE username = :USERNAME");
-        $stm->bindValue('USERNAME', $username);
-        $stm->execute();
-        $username = $stm->fetch();
-
-        return $username;
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
-     * Vérfie si le pseudo existe ou non.
+     * @param mixed $id
+     * @return Member
      */
-	public function userExist($username)
-	{
-	    $stm = $this->getConnection()->prepare("SELECT * FROM members WHERE username = :username");
-	    $stm->bindParam(':username', $username);
-	    $stm->execute();
-	    $res = $stm->fetchColumn();
-
-	    if ($res > 0) {
-	        return true;
-	    }
-	    else {
-	        return false;
-	    }
-	}
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
-     * Vérfie si l'email existe déjà.
+     * @return mixed
      */
-	public function emailExist($email)
-	{
-		// Vérifie que l'email existe ou non.
-	    $stm = $this->getConnection()->prepare("SELECT * FROM members WHERE email = :email");
-	    $stm->bindParam(':email', $email);
-	    $stm->execute();
-	    $res = $stm->fetchColumn();
-
-	    if ($res > 0) {
-	        return true;
-	    }
-	    else {
-	        return false;
-	    }
-	}
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
     /**
-     * Insert un utilisateur dans la BDD.
+     * @param mixed $username
+     * @return Member
      */
-	public function userInsert($username, $email, $password)
-	{
-	    $stm = $this->getConnection()->prepare("INSERT INTO members(username, email, password, date_add) 
-        VALUES(:username, :email, :password, NOW())");
-	    $stm->bindParam('username', $username);
-        $stm->bindParam('email', $email);
-        $stm->bindParam('password', $password);
-	    $stm->execute();
-	}
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     * @return Member
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     * @return Member
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateAdd()
+    {
+        return $this->date_add;
+    }
+
+    /**
+     * @param mixed $date_add
+     * @return Member
+     */
+    public function setDateAdd($date_add)
+    {
+        $this->date_add = $date_add;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     * @return Member
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+        return $this;
+    }
 
 }

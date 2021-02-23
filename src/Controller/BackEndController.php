@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Manager\BlogPostManager;
+use App\Manager\CommentManager;
+use App\Manager\MemberManager;
 use App\Model\BlogPost;
 use App\Model\Comment;
 use App\Service\TwigRenderer;
@@ -13,16 +16,16 @@ use App\Model\Member;
 class BackEndController
 {
     private $renderer;
-    private $blogPost;
-    private $member;
-    private $comment;
+    private $blogPostManager;
+    private $memberManager;
+    private $commentManager;
 
     public function __construct()
     {
         $this->renderer = new TwigRenderer();
-        $this->blogPost = new BlogPost();
-        $this->member = new Member();
-        $this->comment = new Comment();
+        $this->blogPostManager = new BlogPostManager();
+        $this->memberManager = new MemberManager();
+        $this->commentManager = new CommentManager();
     }
 
     /**
@@ -77,7 +80,7 @@ class BackEndController
     public function editBlogPost($idBlog)
     {
         $this->secuirtyCheck();
-        $blog = $this->blogPost->findOneById($idBlog);
+        $blog = $this->blogPostManager->findOneById($idBlog);
 
         $this->renderer->render('edit-blog', ['blog'=>$blog]);
     }
@@ -92,7 +95,7 @@ class BackEndController
         $title = htmlspecialchars($_POST['title-blog']);
         $content = htmlspecialchars($_POST['content-blog']);
 
-        $blog = $this->blogPost->findOneById($idBlog);
+        $blog = $this->blogPostManager->findOneById($idBlog);
 
         $erreurs = $this->valideBlog($title, $content);
 
@@ -104,9 +107,9 @@ class BackEndController
         }
 
         // Insertion dans la BDD
-        $this->blogPost->update($idBlog, $title, $content);
+        $this->blogPostManager->update($idBlog, $title, $content);
 
-        $blog = $this->blogPost->findOneById($idBlog);
+        $blog = $this->blogPostManager->findOneById($idBlog);
 
         $this->renderer->render('edit-blog', ['msg' => 'Votre article à bien été modifié.', 'blog'=> $blog]);
 
@@ -143,7 +146,8 @@ class BackEndController
         }
 
         // Insertion dans la BDD
-        $bloginsert = $this->blogPost->blogInsert($user['id'], $title, $content);
+        $bloginsert = $this->blogPostManager->blogInsert($user['id'], $title, $content);
+
         $this->renderer->render('create-blog', ['msg' => 'Votre article à bien été publié.']);
 
     }
@@ -155,9 +159,9 @@ class BackEndController
     {
         $this->secuirtyCheck();
 
-        $allblogpost = $this->blogPost->AllBlogPost();
+        $allblogpost = $this->blogPostManager->AllBlogPost();
 
-        $comments = $this->comment->findAllNotAccepted();
+        $comments = $this->commentManager->findAllNotAccepted();
 
         $this->renderer->render('admin', ['allblogpost' => $allblogpost, 'comments'=>$comments]);
     }
@@ -170,7 +174,7 @@ class BackEndController
         $this->secuirtyCheck();
 
         //suprresion
-        $this->comment->delete($idComment);
+        $this->commentManager->delete($idComment);
 
         //redirection vers admin
         header('Location:admin');
@@ -184,7 +188,7 @@ class BackEndController
         $this->secuirtyCheck();
 
         //accept
-        $this->comment->accept($idComment);
+        $this->commentManager->accept($idComment);
 
         //redirection
         header('Location:admin');
@@ -198,8 +202,8 @@ class BackEndController
         $this->secuirtyCheck();
 
         //suprresion
-        $this->comment->deleteByBlogId($idBlog);
-        $this->blogPost->delete($idBlog);
+        $this->commentManager->deleteByBlogId($idBlog);
+        $this->blogPostManager->delete($idBlog);
 
         //redirection vers admin
         header('Location:admin');
