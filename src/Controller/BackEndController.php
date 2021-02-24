@@ -146,7 +146,7 @@ class BackEndController
         }
 
         // Insertion dans la BDD
-        $bloginsert = $this->blogPostManager->blogInsert($user['id'], $title, $content);
+        $this->blogPostManager->blogInsert($user['id'], $title, $content);
 
         $this->renderer->render('create-blog', ['msg' => 'Votre article à bien été publié.']);
 
@@ -182,6 +182,7 @@ class BackEndController
 
     /**
      * Accepte le commentaire et redirige sur Admin
+     * @param $idComment
      */
     public function acceptComment($idComment)
     {
