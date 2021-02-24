@@ -40,8 +40,8 @@ class FrontEndController
         if( strlen($comment) < 10 )
         {
             //charge le post
-            $blogpost = new BlogPost();
-            $post = $blogpost->findOneById($postId);
+            $manager = new BlogPostManager();
+            $post = $manager->findOneById($postId);
 
             // Charge les commentaires
             $comments = $this->commentManager->findAllAcceptedByBlogId($postId);
@@ -56,15 +56,15 @@ class FrontEndController
         // Données valide on continue
 
         //Insertion
-        $model = new Comment();
+        $model = new CommentManager();
         $model->insert($postId,$user['id'],$comment);
 
         // Charge les commentaires
         $comments = $this->commentManager->findAllAcceptedByBlogId($postId);
 
         //charge le post
-        $blogpost = new BlogPost();
-        $post = $blogpost->findOneById($postId);
+        $manager = new BlogPostManager();
+        $post = $manager->findOneById($postId);
 
         //affiche la vue
         $this->renderer->render('post', ['post' => $post, 'msg'=>'Votre message a été soumis à vérification.',

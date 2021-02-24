@@ -1,6 +1,8 @@
 <?php
 namespace App\Manager;
 
+use App\Model\BlogPost;
+use App\Model\Comment;
 use App\Service\Database;
 
 class CommentManager extends Database
@@ -16,7 +18,7 @@ class CommentManager extends Database
                 JOIN members ON comment.author_id = members.id 
         WHERE   comment.accept = true AND comment.blog_id = :BLOGID";
 
-        return $this->selectFetchAll($sql, ['BLOGID'=> $blogId]);
+        return  $this->selectFetchAllAsObjects($sql, ['BLOGID'=> $blogId], BlogPost::class);
     }
 
     /**
@@ -30,7 +32,7 @@ class CommentManager extends Database
                 JOIN members ON comment.author_id = members.id 
         WHERE   comment.accept = false ";
 
-        return $this->selectFetchAll($sql,[]);
+        return $this->selectFetchAllAsObjects($sql, [],Comment::class);
     }
 
     /**

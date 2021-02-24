@@ -40,8 +40,8 @@ class BlogPostManager extends Database
     {
         $sql = 'SELECT blogpost.*, members.username username FROM blogpost JOIN members ON blogpost.author_id = members.id 
         WHERE blogpost.id = :ID';
-        $blogpost = $this->selectFetch($sql,['ID'=>$id], BlogPost::class);
-        return $blogpost;
+        $results = $this->selectFetchAsObject($sql, ['ID'=>$id], BlogPost::class);
+        return $results;
     }
 
     /**
@@ -63,7 +63,6 @@ class BlogPostManager extends Database
         $sql = 'SELECT blogpost.*, members.username as author FROM blogpost INNER JOIN members 
         on blogpost.author_id = members.id ORDER BY id DESC';
         $results = $this->selectFetchAllAsObjects($sql, [], BlogPost::class);
-
         return $results;
     }
 

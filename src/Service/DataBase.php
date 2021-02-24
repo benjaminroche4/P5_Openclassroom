@@ -13,24 +13,6 @@ abstract class Database
 
     private $connection;
 
-    public function selectFetch($sql, $parameters = [])
-    {
-        $pdo = $this->getConnection();
-        $stm = $pdo->prepare($sql);
-        $stm->execute($parameters);
-
-        return $stm->fetch();
-    }
-
-    public function selectFetchAll($sql, $parameters = [])
-    {
-        $pdo = $this->getConnection();
-        $stm = $pdo->prepare($sql);
-        $stm->execute($parameters);
-
-        return $stm->fetchAll();
-    }
-
     public function selectFetchAsObject($sql, $parameters = [], $class)
     {
         $pdo = $this->getConnection();
